@@ -1,0 +1,672 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Computer Vision Lecture 3</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="70c6d3a6-0d53-45c0-beb8-5d8e10151d74" class="page sans"><header><h1 class="page-title">Computer Vision Lecture 3</h1><table class="properties"><tbody><tr class="property-row property-row-date"><th><span class="icon property-icon"><svg viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesDate"><path d="M3.29688 14.4561H12.7031C14.1797 14.4561 14.9453 13.6904 14.9453 12.2344V3.91504C14.9453 2.45215 14.1797 1.69336 12.7031 1.69336H3.29688C1.82031 1.69336 1.05469 2.45215 1.05469 3.91504V12.2344C1.05469 13.6973 1.82031 14.4561 3.29688 14.4561ZM3.27637 13.1162C2.70898 13.1162 2.39453 12.8154 2.39453 12.2207V5.9043C2.39453 5.30273 2.70898 5.00879 3.27637 5.00879H12.71C13.2842 5.00879 13.6055 5.30273 13.6055 5.9043V12.2207C13.6055 12.8154 13.2842 13.1162 12.71 13.1162H3.27637ZM6.68066 7.38086H7.08398C7.33008 7.38086 7.41211 7.30566 7.41211 7.05957V6.66309C7.41211 6.41699 7.33008 6.3418 7.08398 6.3418H6.68066C6.44141 6.3418 6.35938 6.41699 6.35938 6.66309V7.05957C6.35938 7.30566 6.44141 7.38086 6.68066 7.38086ZM8.92285 7.38086H9.31934C9.56543 7.38086 9.64746 7.30566 9.64746 7.05957V6.66309C9.64746 6.41699 9.56543 6.3418 9.31934 6.3418H8.92285C8.67676 6.3418 8.59473 6.41699 8.59473 6.66309V7.05957C8.59473 7.30566 8.67676 7.38086 8.92285 7.38086ZM11.1582 7.38086H11.5547C11.8008 7.38086 11.8828 7.30566 11.8828 7.05957V6.66309C11.8828 6.41699 11.8008 6.3418 11.5547 6.3418H11.1582C10.9121 6.3418 10.8301 6.41699 10.8301 6.66309V7.05957C10.8301 7.30566 10.9121 7.38086 11.1582 7.38086ZM4.44531 9.58203H4.84863C5.09473 9.58203 5.17676 9.50684 5.17676 9.26074V8.86426C5.17676 8.61816 5.09473 8.54297 4.84863 8.54297H4.44531C4.20605 8.54297 4.12402 8.61816 4.12402 8.86426V9.26074C4.12402 9.50684 4.20605 9.58203 4.44531 9.58203ZM6.68066 9.58203H7.08398C7.33008 9.58203 7.41211 9.50684 7.41211 9.26074V8.86426C7.41211 8.61816 7.33008 8.54297 7.08398 8.54297H6.68066C6.44141 8.54297 6.35938 8.61816 6.35938 8.86426V9.26074C6.35938 9.50684 6.44141 9.58203 6.68066 9.58203ZM8.92285 9.58203H9.31934C9.56543 9.58203 9.64746 9.50684 9.64746 9.26074V8.86426C9.64746 8.61816 9.56543 8.54297 9.31934 8.54297H8.92285C8.67676 8.54297 8.59473 8.61816 8.59473 8.86426V9.26074C8.59473 9.50684 8.67676 9.58203 8.92285 9.58203ZM11.1582 9.58203H11.5547C11.8008 9.58203 11.8828 9.50684 11.8828 9.26074V8.86426C11.8828 8.61816 11.8008 8.54297 11.5547 8.54297H11.1582C10.9121 8.54297 10.8301 8.61816 10.8301 8.86426V9.26074C10.8301 9.50684 10.9121 9.58203 11.1582 9.58203ZM4.44531 11.7832H4.84863C5.09473 11.7832 5.17676 11.708 5.17676 11.4619V11.0654C5.17676 10.8193 5.09473 10.7441 4.84863 10.7441H4.44531C4.20605 10.7441 4.12402 10.8193 4.12402 11.0654V11.4619C4.12402 11.708 4.20605 11.7832 4.44531 11.7832ZM6.68066 11.7832H7.08398C7.33008 11.7832 7.41211 11.708 7.41211 11.4619V11.0654C7.41211 10.8193 7.33008 10.7441 7.08398 10.7441H6.68066C6.44141 10.7441 6.35938 10.8193 6.35938 11.0654V11.4619C6.35938 11.708 6.44141 11.7832 6.68066 11.7832ZM8.92285 11.7832H9.31934C9.56543 11.7832 9.64746 11.708 9.64746 11.4619V11.0654C9.64746 10.8193 9.56543 10.7441 9.31934 10.7441H8.92285C8.67676 10.7441 8.59473 10.8193 8.59473 11.0654V11.4619C8.59473 11.708 8.67676 11.7832 8.92285 11.7832Z"></path></svg></span>Date</th><td><time>@October 15, 2022</time></td></tr><tr class="property-row property-row-number"><th><span class="icon property-icon"><svg viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesNumber"><path d="M2.4834 10.9902H4.33594L3.75488 13.8887C3.74121 13.9639 3.72754 14.0664 3.72754 14.1416C3.72754 14.5381 3.99414 14.7637 4.39746 14.7637C4.81445 14.7637 5.09473 14.5449 5.18359 14.1143L5.80566 10.9902H8.79297L8.21191 13.8887C8.19824 13.9639 8.18457 14.0664 8.18457 14.1416C8.18457 14.5381 8.45117 14.7637 8.85449 14.7637C9.27148 14.7637 9.55176 14.5449 9.63379 14.1143L10.2627 10.9902H12.4502C12.9287 10.9902 13.2432 10.6758 13.2432 10.2109C13.2432 9.8418 12.9902 9.56836 12.6006 9.56836H10.5498L11.2129 6.28711H13.3662C13.8379 6.28711 14.1523 5.96582 14.1523 5.50098C14.1523 5.13184 13.9062 4.8584 13.5098 4.8584H11.5L12.0195 2.27441C12.0264 2.21973 12.0469 2.11035 12.0469 2.01465C12.0469 1.625 11.7666 1.39258 11.3633 1.39258C10.9053 1.39258 10.6797 1.63867 10.5977 2.05566L10.0303 4.8584H7.04297L7.5625 2.27441C7.57617 2.21973 7.58984 2.11035 7.58984 2.01465C7.58984 1.625 7.30957 1.39258 6.91309 1.39258C6.44824 1.39258 6.21582 1.63867 6.13379 2.05566L5.57324 4.8584H3.54297C3.06445 4.8584 2.75 5.18652 2.75 5.65137C2.75 6.03418 3.00293 6.28711 3.39258 6.28711H5.28613L4.62305 9.56836H2.63379C2.15527 9.56836 1.84082 9.89648 1.84082 10.3613C1.84082 10.7373 2.09375 10.9902 2.4834 10.9902ZM6.09277 9.56836L6.75586 6.28711H9.74316L9.08008 9.56836H6.09277Z"></path></svg></span>Number</th><td>3</td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><svg viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M1.56738 3.25879H14.4258C14.7676 3.25879 15.0479 2.97852 15.0479 2.63672C15.0479 2.29492 14.7744 2.02148 14.4258 2.02148H1.56738C1.21875 2.02148 0.952148 2.29492 0.952148 2.63672C0.952148 2.97852 1.22559 3.25879 1.56738 3.25879ZM1.56738 6.84082H14.4258C14.7676 6.84082 15.0479 6.56055 15.0479 6.21875C15.0479 5.87695 14.7744 5.60352 14.4258 5.60352H1.56738C1.21875 5.60352 0.952148 5.87695 0.952148 6.21875C0.952148 6.56055 1.22559 6.84082 1.56738 6.84082ZM1.56738 10.4229H14.4258C14.7676 10.4229 15.0479 10.1426 15.0479 9.80078C15.0479 9.45898 14.7744 9.18555 14.4258 9.18555H1.56738C1.21875 9.18555 0.952148 9.45898 0.952148 9.80078C0.952148 10.1426 1.22559 10.4229 1.56738 10.4229ZM1.56738 14.0049H8.75879C9.10059 14.0049 9.38086 13.7246 9.38086 13.3828C9.38086 13.041 9.10742 12.7676 8.75879 12.7676H1.56738C1.21875 12.7676 0.952148 13.041 0.952148 13.3828C0.952148 13.7246 1.22559 14.0049 1.56738 14.0049Z"></path></svg></span>Topics</th><td>Non-linear filtering, boundaries, hough transform</td></tr><tr class="property-row property-row-select"><th><span class="icon property-icon"><svg viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesSelect"><path d="M8 15.126C11.8623 15.126 15.0615 11.9336 15.0615 8.06445C15.0615 4.20215 11.8623 1.00293 7.99316 1.00293C4.13086 1.00293 0.938477 4.20215 0.938477 8.06445C0.938477 11.9336 4.1377 15.126 8 15.126ZM8 13.7383C4.85547 13.7383 2.33301 11.209 2.33301 8.06445C2.33301 4.91992 4.84863 2.39746 7.99316 2.39746C11.1377 2.39746 13.6738 4.91992 13.6738 8.06445C13.6738 11.209 11.1445 13.7383 8 13.7383ZM7.62402 10.6348C7.79492 10.915 8.20508 10.9287 8.37598 10.6348L10.666 6.73145C10.8574 6.41016 10.7002 6.04102 10.3652 6.04102H5.62793C5.29297 6.04102 5.14941 6.43066 5.32031 6.73145L7.62402 10.6348Z"></path></svg></span>Type</th><td><span class="selected-value select-value-color-orange">Lecture</span></td></tr></tbody></table></header><div class="page-body"><nav id="268d32a2-7f67-409d-a541-9b488918dfe3" class="block-color-gray table_of_contents"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#24a8556c-36d7-4c5e-bc49-c2918d90510c">Non-Linear Filtering</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#95006de5-1377-4d13-a50f-5c18c1f88def">Median Filter</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#16eced67-40b1-4ba4-9e67-9e63d2e1b1f5">Weighted Mean</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#d989a127-84a9-4180-b8e1-2fe5566ffb10">Bilateral Filtering</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#d357c8cf-4a44-4c23-8d4c-2ff1caa2baae">Boundaries</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#fca144d5-7036-4292-9ef5-dd319ec7f957">MATLAB has 3 options</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#8b7ac054-0492-4910-92b5-180ec8f228e9">OpenCV has just one mode: same</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#2e783990-72a0-4e78-84ac-a199929b1372">Hough Transform</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#8813aef9-2f6e-41a3-85c2-e8345deaf1d2">Finding boundaries</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#d55b3d1c-92bc-4120-857e-826f4f1c1aa3">Multi-scale edge detection</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#867091c8-40e3-47d7-83c1-26b40197d1da">Noisy edges</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#1fbac3b0-5637-47c7-8d77-51fb08e4c869">Line Fitting</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#eeab6717-f561-4b2c-8539-34f49e76e975">Line fitting problems</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#24ec3428-5be8-4465-bf44-1fdfdd4a6251">Hough space</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#3a992804-4179-445e-98b1-2cd588699eb3">Line Parameterizations</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#ff4d2c6d-d5d7-4459-97bb-9e495535e030">Hough Transform properties</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#e1eb8a1f-a8b6-4043-b84f-d926151cd4f4">Image and Parameter Space</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#7d5ace59-3506-4ed7-9b58-338e6425e455">Updated implementation</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#576932e2-6304-4401-af5e-3898980c9b1e">Hough Circles</a></div></nav><h1 id="24a8556c-36d7-4c5e-bc49-c2918d90510c" class="">Non-Linear Filtering</h1><p id="d04009da-6b13-4f08-8fac-04c55024086c" class="">What are the perks of <strong><strong><strong><strong><strong><strong><strong>linear </strong></strong></strong></strong></strong></strong></strong>filtering? </p><ul id="bb33b1da-d413-42f3-9b11-4e8b29eac6a6" class="bulleted-list"><li style="list-style-type:disc">We can make use of convolution’s properties</li></ul><ul id="b4b46937-3d08-441c-bff2-90037caaf99f" class="bulleted-list"><li style="list-style-type:disc">The computational complexity is low </li></ul><ul id="fb013adf-5c08-4f18-b86c-7252ac58e17f" class="bulleted-list"><li style="list-style-type:disc">Separable filters</li></ul><p id="94ac1f62-bb5f-45b7-b663-fc9fa3c60893" class="">Sensors introduce noise and defects. The defects can be things such as <em><em><em><em><em><em><em><em><em><em><em><em><em><em><em><em><em><em><em>salt and pepper noise </em></em></em></em></em></em></em></em></em></em></em></em></em></em></em></em></em></em></em>where some pixel values disappear, or additive gaussian noise, which changes the intensity values of the pixels and may introduce artifacts that may blur the image where the effect is unwanted.</p><h2 id="95006de5-1377-4d13-a50f-5c18c1f88def" class="">Median Filter</h2><p id="407cae43-8f82-49f8-b012-f9a587f5573d" class="">This is a kind of non-linear filter where the values in the neighborhood (that the kernel covers, so if a kernel is a 3x3, the neighborhood comprises of 9 pixels) are sorted and replacing spikes with the median value.</p><figure id="e871f095-2dd6-4d61-bcb8-1a96274e4ce9" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled.png"><img style="width:648px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled.png"/></a></figure><figure id="729bbffc-7039-479f-8453-3eb6c3ad39dc" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%201.png"><img style="width:1133px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%201.png"/></a></figure><p id="b274aad2-f927-4a73-9697-1e857fb82d7d" class="">The missing values in the salt and pepper noisy image are outliers. These can be replaced by the local median using the median filter to smooth the image out.</p><p id="effd3773-95ca-4584-924b-f6079e772efe" class="">The good thing about the median filter is that it is edge preserving. Meaning that if there is an edge, it will not be considered an outlier, and the filter will not attempt to replace. How is this achieved? The filter takes values from the neighborhood, so if the neighborhood indicate there is an edge, it will remain an edge. However, in the mean filter, the mean is computed over the entire image, so the edge is blurred.</p><figure id="c3459c37-c3eb-40ee-a6d2-da8950a65241" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%202.png"><img style="width:336px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%202.png"/></a></figure><p id="f1f3a2c2-1a74-4f22-8efd-4448c5854186" class=""><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>What about the complexity? </strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>The median filter has a complexity of <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>M</mi><mn>2</mn></msup><mi>n</mi><mi>l</mi><mi>o</mi><mi>g</mi><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(M^2nlogn)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span> where <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>M</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">M^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> is the number of pixels in the image of size MxM. This complexity is worse than the linear filtering where the complexity is <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>k</mi><mn>2</mn></msup><mo>×</mo><msup><mi>M</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(k^2\times M^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span> where k is the dimension of the kernel, and n is kxk.</p><h3 id="16eced67-40b1-4ba4-9e67-9e63d2e1b1f5" class="">Weighted Mean</h3><figure id="9b0f39f9-35de-4003-80cd-1853db57df40" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%203.png"><img style="width:946px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%203.png"/></a></figure><p id="e37badff-5737-42ef-b7c4-3d416e675680" class="">The image is multiplied by a weight kernel first that defines which areas are to be given more significance than others. As indicated by the previous figure, the kernel acts as an indicator as to which pixels should be repeated and how many times. For example the pixel in the position upper center, having the value 7, has the respective weight of 2. Therefore it is repeated twice.</p><p id="dc2ede0f-991a-433a-a306-f4e8cd81793e" class="">The new array of pixel values is then sorted in order to find out the weighted median. In this case it is 2, whereas had we not introduced the weights, it would have been 3.</p><h2 id="d989a127-84a9-4180-b8e1-2fe5566ffb10" class="">Bilateral Filtering</h2><p id="c1f601ce-b13c-4088-a82a-f3d9f0633093" class="">What if want to remove Gaussian noise without blurring details of the image? Bilateral filtering smoothens an image with a degree inversely proportional to the local contrast. It is a non-linear filter that is the product of two filters.</p><figure class="block-color-brown_background callout" style="white-space:pre-wrap;display:flex" id="4e2d1751-28d8-4f5b-a462-7b926b467910"><div style="font-size:1.5em"><span class="icon">👁️</span></div><div style="width:100%"><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>Reminder: </strong></strong></strong></strong></strong></strong></strong></strong></strong></strong><figure id="d00a78b9-d9af-478f-adc7-be35cba6e529" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>c</mi><mi>o</mi><mi>n</mi><mi>t</mi><mi>r</mi><mi>a</mi><mi>s</mi><mi>t</mi><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo><mo>=</mo><mi>m</mi><mi>a</mi><mi>x</mi><mo stretchy="false">(</mo><mi>g</mi><mi>L</mi><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo>−</mo><mi>m</mi><mi>i</mi><mi>n</mi><mo stretchy="false">(</mo><mi>g</mi><mi>L</mi><mo stretchy="false">(</mo><mi>I</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">contrast(I) = max(gL(I)) - min(gL(I))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">co</span><span class="mord mathnormal">n</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">a</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">ma</span><span class="mord mathnormal">x</span><span class="mopen">(</span><span class="mord mathnormal">gL</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mclose">))</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">min</span><span class="mopen">(</span><span class="mord mathnormal">gL</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mclose">))</span></span></span></span></span></div></figure><p id="e497c6fa-848f-4b82-bd31-1b2348787675" class="">Where gL is <strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>grey level.</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></p></div></figure><p id="a60ff1dd-84e0-499d-a084-82f15e0c464c" class="">What does this mean? </p><ul id="3d6961a5-b812-412b-ab28-0f437310baf0" class="bulleted-list"><li style="list-style-type:disc">When an area is flat, this means the contrast is 0, so we use gaussian blurring</li></ul><ul id="ea940008-0aa0-489c-88d0-6a80770a2292" class="bulleted-list"><li style="list-style-type:disc">If we have an edge, corner, or texture, the contrast here will be higher, so we will use less blurring in this case.</li></ul><p id="a349dcab-3d6b-4339-aee9-dd3ec8ba9de3" class="">The key is to no smooth blindly and contrast of the area directly affects the degree of smoothing.</p><figure id="ac53a4e7-b81c-43e9-87a3-31cf10ca39e4" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%204.png"><img style="width:974px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%204.png"/></a></figure><p id="446c2b90-3a02-4852-b7a5-59741899daa8" class="">The filter depends on both the gaussian filter and the group of pixels around the pixel being filtered.</p><figure id="0b0bde86-0b0c-4b32-9838-cd202f05220d" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%205.png"><img style="width:984px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%205.png"/></a></figure><p id="42108e48-8eef-479b-85f6-427b9047d44c" class="">Two Gaussian functions in the equation</p><ul id="d5be75db-4240-44e7-95ea-6a47421353d4" class="bulleted-list"><li style="list-style-type:disc"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><msub><mi>σ</mi><mi>s</mi></msub></msub></mrow><annotation encoding="application/x-tex">G_{ \sigma_{s} } </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.93343em;vertical-align:-0.2501em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139199999999997em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.16454285714285719em;"><span style="top:-2.357em;margin-left:-0.03588em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">s</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2501em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> is the spatial component</li></ul><ul id="8331507e-62c3-46a8-8eed-4cb11bed836c" class="bulleted-list"><li style="list-style-type:disc"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><msub><mi>σ</mi><mi>r</mi></msub></msub></mrow><annotation encoding="application/x-tex">G_{ \sigma_{r} } </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.93343em;vertical-align:-0.2501em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139199999999997em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.16454285714285719em;"><span style="top:-2.357em;margin-left:-0.03588em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2501em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> is the range of the intensity. It depends on the difference in intensity rather than the difference in position.<figure id="e99aaf58-3967-426a-b16a-63ce8418476d" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%206.png"><img style="width:305px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%206.png"/></a></figure><p id="2947bbce-a632-41ad-b3cd-8f15dd2e0695" class="">For example, p and q here might be pixels that are close to each other on the image, but the difference in their intensity values is large.</p><figure id="8230aa1e-b5d3-460f-9617-aa3b4753adb4" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%207.png"><img style="width:997px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%207.png"/></a></figure><p id="ec8ba108-dc50-4d12-9aa6-54a9f6db467e" class="">The image above represents the combination of both gaussian filters. We end up preserving the edge in the image, whole smoothing the areas that needed smoothing.</p><p id="5db19178-3f7b-41e6-a159-04709bd83c95" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><msub><mi>W</mi><mi>p</mi></msub></mfrac></mrow><annotation encoding="application/x-tex">\frac{1}{W_p}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3874279999999999em;vertical-align:-0.5423199999999999em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.16454285714285716em;"><span style="top:-2.357em;margin-left:-0.13889em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">p</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2818857142857143em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.5423199999999999em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span><span>﻿</span></span> is the normalization factor so that the new value lies between range.</p><figure id="0e4c482f-78e5-4f71-bce1-bd5db08ab017" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%208.png"><img style="width:983px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%208.png"/></a></figure></li></ul><p id="3df0e2ac-4ed3-4dc5-bc18-0833127831e8" class="">To find the spatial and range components, we can use the gaussian function:</p><div id="4efa56dc-68ea-4976-b5cd-c79f11857c2f" class="column-list"><div id="f7781f16-c287-46fa-9373-aeb815b7feb3" style="width:50%" class="column"><figure id="6583c957-82d0-4d55-9b96-a5d8d2c466f9" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>G</mi><msub><mi>σ</mi><mi>s</mi></msub></msub><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∣</mi><mi>p</mi><mo>−</mo><mi>q</mi><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mi>e</mi><mfrac><mrow><mo>−</mo><msup><mi>E</mi><mn>2</mn></msup></mrow><mrow><mn>2</mn><msubsup><mi>σ</mi><mi>s</mi><mn>2</mn></msubsup></mrow></mfrac></msup></mrow><annotation encoding="application/x-tex">G_{\sigma _s}(||p - q||) = e^{\frac{-E^2}{2\sigma _s^2}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0001em;vertical-align:-0.2501em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139199999999997em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.16454285714285719em;"><span style="top:-2.357em;margin-left:-0.03588em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2501em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord">∣∣</span><span class="mord mathnormal">p</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mord">∣∣</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.44644em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.44644em;"><span style="top:-3.65342em;margin-right:0.05em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mopen nulldelimiter sizing reset-size3 size6"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1328857142857145em;"><span style="top:-2.5061857142857145em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9384399999999999em;"><span style="top:-2.24444em;margin-left:-0.03588em;margin-right:0.1em;"><span class="pstrut" style="height:2.64444em;"></span><span class="mord mathnormal mtight">s</span></span><span style="top:-2.93844em;margin-right:0.1em;"><span class="pstrut" style="height:2.64444em;"></span><span class="mord mtight">2</span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3.2255000000000003em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line mtight" style="border-bottom-width:0.049em;"></span></span><span style="top:-3.384em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.04844em;"><span style="top:-3.04844em;margin-right:0.1em;"><span class="pstrut" style="height:2.64444em;"></span><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7795285714285713em;"><span></span></span></span></span></span><span class="mclose nulldelimiter sizing reset-size3 size6"></span></span></span></span></span></span></span></span></span></span></span></span></span></span></div></figure></div><div id="56e42ebd-5c2e-4edc-a2d7-f16e6d375f8e" style="width:50%" class="column"><figure id="7ee2207d-7ca7-484a-866f-b9bf5f402e0e" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>G</mi><msub><mi>σ</mi><mi>r</mi></msub></msub><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><msub><mi>I</mi><mi>p</mi></msub><mo>−</mo><msub><mi>I</mi><mi>q</mi></msub><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mi>e</mi><mfrac><mrow><mo>−</mo><msup><mi>D</mi><mn>2</mn></msup></mrow><mrow><mn>2</mn><msubsup><mi>σ</mi><mi>r</mi><mn>2</mn></msubsup></mrow></mfrac></msup></mrow><annotation encoding="application/x-tex">G_{\sigma _r}(|I_p-I_q|) = e^{\frac{-D^2}{2\sigma _r^2}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139199999999997em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.16454285714285719em;"><span style="top:-2.357em;margin-left:-0.03588em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2501em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139200000000003em;"><span style="top:-2.5500000000000003em;margin-left:-0.07847em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">p</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139200000000003em;"><span style="top:-2.5500000000000003em;margin-left:-0.07847em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.44644em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.44644em;"><span style="top:-3.65342em;margin-right:0.05em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mopen nulldelimiter sizing reset-size3 size6"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1328857142857145em;"><span style="top:-2.5061857142857145em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9384399999999999em;"><span style="top:-2.24444em;margin-left:-0.03588em;margin-right:0.1em;"><span class="pstrut" style="height:2.64444em;"></span><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span><span style="top:-2.93844em;margin-right:0.1em;"><span class="pstrut" style="height:2.64444em;"></span><span class="mord mtight">2</span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3.2255000000000003em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line mtight" style="border-bottom-width:0.049em;"></span></span><span style="top:-3.384em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.04844em;"><span style="top:-3.04844em;margin-right:0.1em;"><span class="pstrut" style="height:2.64444em;"></span><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7795285714285713em;"><span></span></span></span></span></span><span class="mclose nulldelimiter sizing reset-size3 size6"></span></span></span></span></span></span></span></span></span></span></span></span></span></span></div></figure></div></div><p id="6bc14449-f329-49d9-ab58-7c67c918b716" class="">where E and D are the matrices representing the Euclidean distance and the absolute intensity difference between each pixel and the central pixel. So for example if we have the image:</p><figure id="4323276c-3424-480a-b8e5-6e85ab216876" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%209.png"><img style="width:295px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%209.png"/></a></figure><p id="36f52370-2c35-42a9-8679-b6e3e15f2ddd" class="">we get E and D as:</p><figure id="56c15432-7861-4567-ba19-c3b886f561a5" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2010.png"><img style="width:459px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2010.png"/></a></figure><p id="51d0fe23-24c2-430e-93be-99a7846c17b9" class="">Then we perform element-wise multiplication and normalize it to find the bilateral filter for the central pixel.</p><p id="da659608-8a22-456b-8980-663943c9f964" class="">To get the normalization factor W, we sum all the values in the bilateral filter.</p><h1 id="d357c8cf-4a44-4c23-8d4c-2ff1caa2baae" class="">Boundaries</h1><p id="c086bde8-41ae-46f8-8c97-bca6406a4885" class="">There is a problem associated with boundaries in images. If the image size is <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span></span><span>﻿</span></span> and the kernel size is <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi></mrow><annotation encoding="application/x-tex">g</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span></span></span></span></span><span>﻿</span></span>, then the pixels at the edge of the image will have the problem of not having enough neighbors for the kernel to fit over. So how do we handle this?</p><h3 id="fca144d5-7036-4292-9ef5-dd319ec7f957" class="">MATLAB has 3 options</h3><ul id="920527c4-e442-4a9c-898c-cf9c354d40c0" class="bulleted-list"><li style="list-style-type:disc">full: output size is sum of sizes of f and g</li></ul><ul id="36957cd5-95ef-414d-b5ba-a566c1c8f577" class="bulleted-list"><li style="list-style-type:disc">same: output size is same as f</li></ul><ul id="d6317106-a138-4fb9-807c-f78559de4b44" class="bulleted-list"><li style="list-style-type:disc">valid: output size is difference of sizes of f and g</li></ul><h3 id="8b7ac054-0492-4910-92b5-180ec8f228e9" class="">OpenCV has just one mode: same</h3><p id="914c49f4-2fa9-43ae-aab9-f2ede9826e21" class="">But then how do we deal with the filter window falling off the edge of the image.</p><p id="1d1d3eb0-be16-4948-af8b-9f6a8cce4a88" class="">There are multiple methods:</p><ul id="7e28697b-473b-4d4d-8b65-d1f8d9449de3" class="bulleted-list"><li style="list-style-type:disc">clip filter</li></ul><div id="4363520a-b2bc-46b0-8f55-62604b85e170" class="column-list"><div id="1eedbcd3-c9e9-4de4-938c-5bce11cefc96" style="width:25%" class="column"><figure id="1360f92f-f2c4-4365-a9ba-8660c5d106c6" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2011.png"><img style="width:310px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2011.png"/></a></figure></div><div id="232af91e-85d4-4acc-9845-b1b9c05297e9" style="width:25%" class="column"><figure id="137f4a73-0c15-4eab-ac74-137011d7f0c8" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2012.png"><img style="width:339px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2012.png"/></a></figure></div><div id="86f022de-2136-4d0d-b66c-a9e1113fbd3d" style="width:25%" class="column"><figure id="46bf1aab-ba0b-43b9-8be9-a21a5edb83ba" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2013.png"><img style="width:342px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2013.png"/></a></figure></div><div id="85da0050-b32b-40dc-8d13-029ff6c1c989" style="width:25%" class="column"><figure id="bbd14609-2f6f-4d22-b6e9-2409a30b7d54" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2014.png"><img style="width:336px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2014.png"/></a></figure></div></div><ul id="b25f92f4-196d-4255-a01a-13cfe18c995e" class="bulleted-list"><li style="list-style-type:disc">Wrap around</li></ul><div id="f1e3a760-3557-4b28-92fd-8c6f4a43e5d3" class="column-list"><div id="5d8f2245-f133-418f-b42f-6b91651c0215" style="width:25%" class="column"><figure id="b04c8595-e6fb-40e7-9254-29db5e166111" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2011.png"><img style="width:310px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2011.png"/></a></figure></div><div id="f8bd571d-8b72-4317-8fba-ae47bc7f4593" style="width:25%" class="column"><figure id="3f7c951c-69da-4365-86d8-6fb150ab6c8b" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2015.png"><img style="width:365px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2015.png"/></a></figure></div><div id="ad1e5316-71f6-4b55-88a7-c01f5b687764" style="width:25%" class="column"><figure id="ae5797d0-5410-453a-b229-3f1894b4e180" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2016.png"><img style="width:365px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2016.png"/></a></figure></div><div id="fce37f5d-e693-4ea9-a2d2-9b88db0c01d4" style="width:25%" class="column"><figure id="a91c7f88-1d09-43a0-9d2d-7d52f22aead1" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2017.png"><img style="width:334px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2017.png"/></a></figure></div></div><ul id="d7331c5c-6a16-404e-bd21-b980d4b682a7" class="bulleted-list"><li style="list-style-type:disc">copy edge</li></ul><div id="9f47c6a4-2407-4b39-aba8-2deb60de520b" class="column-list"><div id="c640f9f1-a574-4670-bd30-f50a61e6afaa" style="width:25%" class="column"><figure id="8bf3d9b4-89f2-4722-afbe-8840938ba956" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2011.png"><img style="width:310px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2011.png"/></a></figure></div><div id="271c07de-dcc6-4c02-b79d-fe040e5e2efa" style="width:25%" class="column"><figure id="ae7a3e97-4143-426d-80fb-8ece296ace92" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2018.png"><img style="width:357px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2018.png"/></a></figure></div><div id="f46c045f-3bb9-4405-b9b4-5b579c58d524" style="width:25%" class="column"><figure id="a8df0712-bc8e-4480-8008-d4d5bcd83d86" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2019.png"><img style="width:356px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2019.png"/></a></figure></div><div id="95a44da0-e48c-40d4-9244-beac38a5a321" style="width:25%" class="column"><figure id="71a2e04b-afd9-4750-9acb-0311fb6bd758" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2020.png"><img style="width:328px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2020.png"/></a></figure></div></div><ul id="08b034eb-3efb-45b4-b5d4-7e9509a5a7f1" class="bulleted-list"><li style="list-style-type:disc">reflect across edge </li></ul><div id="eb95dc7b-e322-4752-9c2a-d7412a6cfecf" class="column-list"><div id="3b66f342-b178-46a9-8dcb-a8893f77cd8e" style="width:25%" class="column"><figure id="67269d69-e90f-441d-aa26-85d909dd252a" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2011.png"><img style="width:310px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2011.png"/></a></figure></div><div id="790138cf-d102-4f32-b42d-5fed709886dd" style="width:25%" class="column"><figure id="f2ab29cc-008f-4863-b411-e49daf29d69e" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2021.png"><img style="width:369px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2021.png"/></a></figure></div><div id="71c58a2b-bdc0-4f62-9239-dacc43565769" style="width:25%" class="column"><figure id="8b15eeff-5589-452d-a76a-d8131fd6b25d" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2022.png"><img style="width:357px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2022.png"/></a></figure></div><div id="6eb981fa-9c0f-419a-b0b1-49642757c304" style="width:25%" class="column"><figure id="32e8cbbc-14b7-49af-850d-5e0c9aac114f" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2023.png"><img style="width:323px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2023.png"/></a></figure></div></div><p id="7c09c621-68c3-4dfb-93a2-db41ad45df67" class="">We usually use reflect over edge method as it is considered the best one (subjective as that may be).</p><h1 id="2e783990-72a0-4e78-84ac-a199929b1372" class="">Hough Transform</h1><h2 id="8813aef9-2f6e-41a3-85c2-e8345deaf1d2" class="">Finding boundaries</h2><p id="d3aa71cb-158b-4f23-8ff1-e102a2ddbb7d" class="">When would edge detection fail? So far we were assuming that an edge equates a boundary in an image, but that may not always be the case. An edge represents a large discontinuity in intensity, like the difference between foreground and background. In an edge, it is obvious that there is an object change. </p><p id="b909a4aa-7580-4e3e-9eff-7e67c82500af" class="">However, what if we have an image like this </p><figure id="68aa9d6c-6677-4e31-851a-46ee6f99c08b" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2024.png"><img style="width:923px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2024.png"/></a></figure><p id="58726b0f-81f7-4a27-8f02-400309fdc74f" class="">The two elephants are of the same kind. There is no obvious discontinuity between them at the boundary between them. In this case, edge detection will fail to find a boundary.</p><figure id="471521d1-f489-4cbb-9a36-c6f55e184ccc" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2025.png"><img style="width:927px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2025.png"/></a></figure><p id="d76a19f0-94dc-4064-a1d9-bbf95441a964" class="">What defines the existence of a boundary here? The transition in this case is a discontinuity in <strong>depth</strong> rather than <strong>intensity, </strong>reflecting the presence of a boundary. </p><p id="e89ff85d-5f9e-48f2-bf2b-fe28ae584c9a" class="">There is also the definition of boundary. It depends on each task. For example, take the picture below of grains. Do we want to detect the boundary between each grain, or the general shape of the sack?</p><figure id="ac9b58d5-81f0-405c-8653-e149d842b4d3" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2026.png"><img style="width:922px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2026.png"/></a></figure><div id="bb09318d-1cf2-4306-b266-6e68b9868449" class="column-list"><div id="0f4cc7f0-48bd-4c4f-98be-9d93f29b0b69" style="width:50%" class="column"><figure id="f68e8bb2-2b39-465c-8c1c-b0ba2b8ae8e7" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2027.png"><img style="width:927px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2027.png"/></a></figure></div><div id="5e36fdc7-7fc9-432c-a2a5-8408884911ee" style="width:50%" class="column"><figure id="329295d3-b1ca-42c0-936d-7e4e9354852e" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2028.png"><img style="width:926px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2028.png"/></a></figure></div></div><p id="057f92f6-69b2-4bac-9300-dff61bffa57c" class="">Another problem with edge detection is that the amplitude is high in general in some areas of the image (darker regions) and low in other regions (lighter ones). This entails that shadows will always appear as an edge.</p><h3 id="d55b3d1c-92bc-4120-857e-826f4f1c1aa3" class="">Multi-scale edge detection</h3><p id="ff6096eb-b915-4b22-95a9-8ae03adc8675" class="">We can conclude that different resolutions need different edge detectors. Do we want the edges of objects and entities, or do we want the details?</p><figure id="81cacc08-7afa-4721-9a33-cea4f5c48301" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2029.png"><img style="width:918px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2029.png"/></a></figure><h3 id="867091c8-40e3-47d7-83c1-26b40197d1da" class="">Noisy edges</h3><p id="700ba60b-1859-4322-a032-df6557b4ae2d" class="">If there are noisy edges in an image, no clear edge will be detected.</p><figure id="b0c1b2e8-c0b7-4553-b315-6ca2a2261b49" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2030.png"><img style="width:845px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2030.png"/></a></figure><p id="1a392a81-d63c-45a1-8b27-379d7c06ca3e" class="">The measures that the edge detectors use may not always align to what we think is an edge.</p><h2 id="1fbac3b0-5637-47c7-8d77-51fb08e4c869" class="">Line Fitting</h2><p id="70a92ab3-1e37-4a20-afdd-eec985622065" class="">If edge detection returns a lot of pixels, how do we find an exact line? We will try to group some pixels into one line using <strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>line fitting. </strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></p><figure id="e3c918da-38b4-4047-990e-056f5b7f3f65" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2031.png"><img style="width:417px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2031.png"/></a></figure><figure id="c0f9a056-489c-4b68-8af0-0b9828704b78" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2032.png"><img style="width:255px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2032.png"/></a></figure><p id="f667c086-bb60-430a-8b4e-1984b5c99e55" class="">We can to minimize the <strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>average square distance (E) </strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>to find the best fit line that passes through the pixels the edge detector decided lie on an edge. This can be done by taking its derivative, equating it with zero, and finding m and c using a close form solution.</p><p id="acb79924-31f1-49fa-9685-bd5356bb8bf9" class="">But is this the best way? Any edge detector will return some pixels as feature points, and those features cannot be assumed to be lying on just one line. However, line fitting, by definition, returns just one line. Line fitting would be a good approach only on the condition that we have just one line in the image, which is an abnormal constraint.</p><p id="4659fd08-9a58-4669-856e-dc6ff10a36eb" class=""><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>Solving the line fitting problem:</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></p><p id="8f336b52-8e64-49c2-868d-2ed33e96f163" class="">We have multiple x and y points, represented by X and Y. We wish to find B, which contains the line parameters, m and b. </p><figure id="c11c4ad4-7c14-478b-92ea-ad68e9172f4d" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2033.png"><img style="width:475px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2033.png"/></a></figure><p id="3eff7fcb-b793-4eda-b3ff-de70f4168e76" class="">We can define E as the square difference Y - XB. Expressed in vector form as follows:</p><figure id="7e98c7eb-91ec-476f-8a07-ec7623a18cbd" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2034.png"><img style="width:791px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2034.png"/></a></figure><p id="5c7a6b3b-fd91-4f00-91fa-396ff47be177" class="">We can get the derivative of this and equate it to zero as follows</p><figure id="e845145a-1c99-4e34-9d6e-da6560a78d61" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2035.png"><img style="width:361px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2035.png"/></a></figure><p id="1e0f2655-9dd8-4f72-8a1a-028734a69290" class="">Finally giving us the solution as</p><figure id="f1dfc918-c3f1-458f-a0c4-93d730c2e037" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2036.png"><img style="width:245px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2036.png"/></a></figure><h3 id="eeab6717-f561-4b2c-8539-34f49e76e975" class="">Line fitting problems</h3><ul id="414be65d-9010-4b9f-bf17-c1577886336d" class="bulleted-list"><li style="list-style-type:disc">Squared error heavily penalizes outliers</li></ul><figure id="82c0f1f2-74a3-40c8-8393-55f4adf95f43" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2037.png"><img style="width:240px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2037.png"/></a></figure><ul id="c7152343-45c9-4f89-ad51-a27ce97376a7" class="bulleted-list"><li style="list-style-type:disc">The best fit line may have a huge E for some pixels on the edge</li></ul><figure id="d0b59451-330c-49e3-9f72-1f3fe65822ac" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2038.png"><img style="width:288px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2038.png"/></a></figure><h2 id="24ec3428-5be8-4465-bf44-1fdfdd4a6251" class="">Hough space</h2><p id="ec3f4d8e-5b2f-4289-94f5-5ef351d245ee" class="">Every point in the Hough space is a line equation. Which are the edges in the images? The points that are peaks in the Hough transform, ie. the points where there are a lot of intersections — the highly bright regions.</p><div id="170fb79f-9810-40da-8d6c-28bbfda1cdb8" class="column-list"><div id="2c3d05f6-2fd2-4606-ae4f-6337426ee9d0" style="width:50%" class="column"><figure id="185e53bb-d4a1-4eb7-92cc-0db313523be7" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2039.png"><img style="width:702px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2039.png"/></a></figure></div><div id="6407a31e-9034-4bba-b8cc-297dbb415df3" style="width:50%" class="column"><figure id="35807686-a1fe-471e-930c-e920c3b854d4" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2040.png"><img style="width:706px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2040.png"/></a></figure></div></div><p id="c542ad7a-4fbc-4dd2-aa28-757a6fddc80b" class=""><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>How to vote in Hough space?</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></p><p id="c36d8da4-39e8-431c-975b-f4adeaf4e2dc" class="">We can try model fitting. However, there are multiple difficulties</p><ul id="8f6a5127-82cb-46bc-bf54-b951e9b6d2a4" class="bulleted-list"><li style="list-style-type:disc">Clutter → like in the grains picture, where is the boundary?</li></ul><ul id="06549c8d-b4d1-4ce0-a82f-33ceb3834600" class="bulleted-list"><li style="list-style-type:disc">Multiple lines in an image (like the two intersecting lines that represent the edge of a mountaintop) cannot have the same model.</li></ul><ul id="3c1011dc-44ea-4ab5-a12a-124ecb6bfb55" class="bulleted-list"><li style="list-style-type:disc">Missing data → the whole model doesn’t appear in the picture.</li></ul><ul id="5b67d429-d57d-4be1-9ff4-5a0140c79e5a" class="bulleted-list"><li style="list-style-type:disc">Noise will create lines that do not exist. The possible lines are too many since any 2 points can have a line between them.</li></ul><figure class="block-color-brown_background callout" style="white-space:pre-wrap;display:flex" id="623b8df6-7f07-4de5-8445-c525c0b2662b"><div style="font-size:1.5em"><span class="icon">👁️</span></div><div style="width:100%"><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>Why do we say model fitting? </strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>We can use Hough to find lines or circles or any shape that has <em><em><em><em><em><em><em><em>parameters. </em></em></em></em></em></em></em></em>In this case, we are finding the <em><em><em><em><em><em>model </em></em></em></em></em></em>rather than the line.</div></figure><p id="1576e216-47a7-48ca-a2cd-58bd4e57361f" class="">It is not feasible to check all combinations of features by fitting a model to each possible subset</p><h3 id="3a992804-4179-445e-98b1-2cd588699eb3" class="">Line Parameterizations</h3><p id="7b9b83f7-bef4-412f-a75b-7777a7f664cb" class="">We will define a set of parameters for a model.</p><p id="46cb304b-eee9-45fb-87a6-84662e9ae847" class="">For example, a line model in <strong>slope intercept form</strong> has the following form: </p><figure id="ef18a5f9-fa98-4611-b842-462f177e22fb" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2041.png"><img style="width:341px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2041.png"/></a></figure><p id="c35dbe9c-dde3-41a1-bad8-1659f68cf7a7" class=""><strong>Double intercept</strong> form looks like this:</p><figure id="162c43c6-04bf-415e-a446-b54f73db6fcb" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2042.png"><img style="width:357px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2042.png"/></a></figure><p id="a690d704-f5bf-4520-b62f-5b45fe43551d" class="">These are different forms for the same line</p><figure id="4ccba5a5-0386-4e58-8fea-09e9cbfc2b05" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2043.png"><img style="width:441px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2043.png"/></a></figure><p id="c5ab3e7a-5691-41cf-b98b-3a3a55325ce1" class="">Another form is the <strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>normal form, </strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>which we are interested in for the Hough transform</p><figure id="f8a68701-ce72-45c8-843f-7151316f6b93" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2044.png"><img style="width:381px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2044.png"/></a></figure><figure id="a7ad4b1e-66c1-4229-8e8c-3df801f64a45" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2045.png"><img style="width:442px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2045.png"/></a></figure><h3 id="ff4d2c6d-d5d7-4459-97bb-9e495535e030" class="">Hough Transform properties</h3><ul id="ef64126a-cb07-431d-9407-930d76b9a152" class="bulleted-list"><li style="list-style-type:disc">Generic framework for detecting a parametric model: it can represent any model that has parameters — a line, a circle, an ellipse, etc.</li></ul><ul id="f25c0e84-a942-4790-815f-8460882c07c2" class="bulleted-list"><li style="list-style-type:disc">Edges don’t have to be connected</li></ul><ul id="7dd592f3-9a54-43bd-aa48-46f2d89ddb3f" class="bulleted-list"><li style="list-style-type:disc">Lines can be occluded (part of them hidden)</li></ul><ul id="2ebb227f-2eb7-4908-b497-3efaa2df8e76" class="bulleted-list"><li style="list-style-type:disc">Key idea: edges <strong>vote </strong>for the possible models (a set of models, yielding more than one boundary)</li></ul><h3 id="e1eb8a1f-a8b6-4043-b84f-d926151cd4f4" class="">Image and Parameter Space</h3><p id="36ad7af1-ae24-4257-a06c-4d6bdf95a306" class="">Hough transform depends on converting the <strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>image space </strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>into a <strong><strong><strong><strong><strong><strong><strong>parameter space, </strong></strong></strong></strong></strong></strong></strong>where the model’s parameters (for example, m and b for a line model), become the variables in the parameter space. The parameter space is what we call the <strong><strong><strong><strong><strong><strong><strong><strong><strong>Hough space.</strong></strong></strong></strong></strong></strong></strong></strong></strong></p><p id="c54bcb5b-93d2-4435-a824-74561ba618a0" class="">We can observe some transformations:</p><table id="3627e9ab-f9db-4c97-976d-bc5169ccbb50" class="simple-table"><thead class="simple-table-header"><tr id="3cdd9247-43cd-4dbb-a508-60e99cc6257a"><th id="U&gt;k&lt;" class="simple-table-header-color simple-table-header" style="width:277.5px">Image Space</th><th id="a@uN" class="simple-table-header-color simple-table-header" style="width:277.5px">Hough (Parameter) Space</th></tr></thead><tbody><tr id="317a2343-41bb-4d78-809f-81f18b40c44f"><td id="U&gt;k&lt;" class="" style="width:277.5px">Line</td><td id="a@uN" class="" style="width:277.5px">point</td></tr><tr id="3e7cc39a-6aa9-4910-b26c-9303cfecdc08"><td id="U&gt;k&lt;" class="" style="width:277.5px">point</td><td id="a@uN" class="" style="width:277.5px">line</td></tr><tr id="3d6612cf-f5b9-4321-ba5a-be02f63eb3cc"><td id="U&gt;k&lt;" class="" style="width:277.5px">2 points</td><td id="a@uN" class="" style="width:277.5px">intersection of two lines</td></tr></tbody></table><p id="8848e58c-000e-4593-8dc1-9e64a5b286fe" class="">A point in the image space has a lot of lines passing through it (our possible boundaries). All of these lines are points in the parameter space, thus forming a line.</p><p id="bb0073a9-d10e-4d19-8970-5bf04df01d6d" class=""><div class="indented"><figure id="b4d5ae95-5ab5-425c-bb14-d70cbc856c88" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2046.png"><img style="width:908px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2046.png"/></a></figure><figure id="946a63e5-dc9f-4dd3-b4aa-3f71c37033b4" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2047.png"><img style="width:883px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2047.png"/></a></figure><figure id="27bf6aef-e5de-4c15-a0dc-a5b059000d1c" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2048.png"><img style="width:899px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2048.png"/></a></figure><p id="298c9f50-8c34-411d-8e9f-37e95ade959f" class="">Do 2 points always represent an intersection in the parameter space? It depends. If the 2 points have a slope of infinity between them (form a vertical line), then in the parameter space, they will form <strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>parallel lines.</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></p><figure id="c01b779d-647f-4948-8f2c-a8f3fb866614" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2049.png"><img style="width:875px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2049.png"/></a></figure><p id="46b85b5f-2933-4de9-b8ba-4bcb406024fb" class="">In this case, where is our edge? Hough transform relies on <strong><strong><strong><strong><strong><strong><strong><strong>voting, </strong></strong></strong></strong></strong></strong></strong></strong>meaning that the more lines intersect at a point in the Hough space, the more likely that this point represents a line (an edge) in the the image space.</p><p id="78d94b4d-86d2-46aa-86ce-9828b229dbee" class="">More examples:</p></div></p><figure id="9ed35b68-c2c7-4345-ae38-c3acd1bf3f1d" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2050.png"><img style="width:887px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2050.png"/></a></figure><figure id="85dcd5c6-cbd7-479e-823c-367791b991e5" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2051.png"><img style="width:887px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2051.png"/></a></figure><figure id="d1796f95-ae1c-4bf3-b553-ff3eab84a71c" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2052.png"><img style="width:620px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2052.png"/></a></figure><p id="49b62bd5-afeb-460e-bedf-4cbff72d2c05" class="">Algorithm explanation: we will create an accumulator 2D array with all possible slopes and all possible y-intercepts. Whenever an image point lies on the line formed by them, a vote is added to that line. </p><p id="42afcc21-e64f-41e5-814b-dc8bdcbbeddb" class=""><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>The problem with this </strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>is that we have parallel lines with intersections at infinity and no solution. Not to mention that the y-intercepts are infinite as well. For us to actually vote on a line, we need a <em><em><em><em><em><em><em><em><em><em><em><em><em><em><em><em><em><em><em><em><em>finite number of points </em></em></em></em></em></em></em></em></em></em></em></em></em></em></em></em></em></em></em></em></em>to vote on, so how do we achieve that?</p><p id="047d2205-dc46-40d5-9127-c8fed6dc8052" class=""><strong><strong><strong><strong><strong>We can use the normal form. </strong></strong></strong></strong></strong>In the normal form, we have a finite number of possible <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span></span><span>﻿</span></span> and <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ρ</mi></mrow><annotation encoding="application/x-tex">\rho</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">ρ</span></span></span></span></span><span>﻿</span></span>.</p><figure id="79636dc3-e2ff-44a2-9fef-f72f420c72a1" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2053.png"><img style="width:190px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2053.png"/></a></figure><p id="b26325e8-e5b4-42ef-b7c1-1f2feb4e1f7f" class="">
+</p><table id="7f8166bc-3a54-4074-a30f-aca3b5c57ac0" class="simple-table"><thead class="simple-table-header"><tr id="0cedb9a6-5546-45cd-8708-3401319d89fb"><th id="U&gt;k&lt;" class="simple-table-header-color simple-table-header" style="width:277.5px">Image Space</th><th id="a@uN" class="simple-table-header-color simple-table-header" style="width:277.5px">Hough (Parameter) Space</th></tr></thead><tbody><tr id="23b70a32-6052-4767-b439-f6f2f024178f"><td id="U&gt;k&lt;" class="" style="width:277.5px">Line</td><td id="a@uN" class="" style="width:277.5px">wave</td></tr><tr id="5b7e96bf-3bf0-4bdf-8201-130528b74961"><td id="U&gt;k&lt;" class="" style="width:277.5px">point</td><td id="a@uN" class="" style="width:277.5px">point</td></tr><tr id="4e04c7ce-81e4-4466-85f7-283292513029"><td id="U&gt;k&lt;" class="" style="width:277.5px">2 points</td><td id="a@uN" class="" style="width:277.5px">intersection of two sinusoids</td></tr></tbody></table><figure id="0e5d81a5-38c1-45a7-a4a5-945df4574d3c" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2054.png"><img style="width:884px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2054.png"/></a></figure><figure id="feef8437-f6a6-4519-9b5b-12e3d7ed760d" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2055.png"><img style="width:887px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2055.png"/></a></figure><figure id="e6370b7c-e169-4ccf-aeb6-bf498f74f749" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2056.png"><img style="width:886px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2056.png"/></a></figure><p id="51226d3f-225e-445a-a8bf-52fce9352298" class=""><strong><strong><strong><strong>How does varying a line in the image space affect the Hough space?</strong></strong></strong></strong></p><figure id="86a1721b-f84f-4713-9846-a81ed306258b" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2057.png"><img style="width:890px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2057.png"/></a></figure><p id="396c0cc1-cf98-436d-8441-8b2b2943d1b3" class="">As we change the angle of the line by changing the slope, the new point (<style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ρ</mi></mrow><annotation encoding="application/x-tex">\rho</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">ρ</span></span></span></span></span><span>﻿</span></span>, <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span></span><span>﻿</span></span>) varies. </p><p id="7c32b166-e921-4dc5-b2e2-10b7872e5fd4" class="">
+</p><figure id="4099e66d-bf81-43f9-8eeb-05ba34e65118" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2058.png"><img style="width:2486px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2058.png"/></a></figure><figure id="cfc23fa9-f215-43a2-b871-b3a649ae7bb1" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2059.png"><img style="width:873px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2059.png"/></a></figure><figure id="0fc6765c-ea1c-49a2-a136-82338db15419" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2060.png"><img style="width:860px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2060.png"/></a></figure><figure id="f3070253-ab28-49f5-8067-da9df76ed9a0" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2061.png"><img style="width:868px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2061.png"/></a></figure><figure id="136dea84-5fdf-4786-9d63-722a3bf6fd4f" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2062.png"><img style="width:873px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2062.png"/></a></figure><p id="c52359c2-942f-4525-a2d5-53fb989b26d7" class="">After the line rotated 180 degrees, the <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ρ</mi></mrow><annotation encoding="application/x-tex">\rho </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">ρ</span></span></span></span></span><span>﻿</span></span> became negative. Why is that?</p><figure id="d0124ca2-febc-4667-87db-27f170a96b4a" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2063.png"><img style="width:900px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2063.png"/></a></figure><p id="945a453e-4966-4e0d-a391-58469309d5d5" class="">So if our <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span></span><span>﻿</span></span> ranges from 0 to 180 degrees (or -90 to 90), our <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ρ</mi></mrow><annotation encoding="application/x-tex">\rho</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">ρ</span></span></span></span></span><span>﻿</span></span> will range from <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><msub><mi>ρ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub></mrow><annotation encoding="application/x-tex">-\rho_{max} </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7777700000000001em;vertical-align:-0.19444em;"></span><span class="mord">−</span><span class="mord"><span class="mord mathnormal">ρ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ma</span><span class="mord mathnormal mtight">x</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> to <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ρ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\rho_{max}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal">ρ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ma</span><span class="mord mathnormal mtight">x</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span>.</p><p id="0649900c-e890-41de-9a59-437a28dc9396" class="">From the sheet:</p><figure id="c8877f5c-7ae2-4103-be75-a3f776259c97" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2064.png"><img style="width:845px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2064.png"/></a></figure><p id="ca7597f6-64a4-4cd3-8cb5-57516cad1672" class="">Recall </p><figure id="5b7d44a1-614d-480d-a13a-a155b3d90848" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2065.png"><img style="width:432px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2065.png"/></a></figure><h3 id="7d5ace59-3506-4ed7-9b58-338e6425e455" class="">Updated implementation</h3><figure id="158e2786-d2dd-456c-aa26-af0e2f28889e" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2066.png"><img style="width:889px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2066.png"/></a></figure><p id="4c59c00c-a989-46c2-abdf-23bf86287be0" class="">What does step 3 entail? We find the local maxima, which is the (<style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ρ</mi></mrow><annotation encoding="application/x-tex">\rho</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">ρ</span></span></span></span></span><span>﻿</span></span>, <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span></span><span>﻿</span></span>) pair with the maximum number of votes within their neighborhood. For this we need to tune the parameter of how many pixels are included in the neighborhood. Why not just use the maximum value? Then our image will end up having just one line/model, which defeats the purpose of the entire endeavour.</p><p id="2c1c8638-45d3-42b4-856f-0b3787440756" class="">A small animation that shows how the Hough space changes as the input image line changes:</p><figure id="eedd6037-808f-43c5-b64d-b826d7bc87a1"><a href="https://www.reddit.com/r/learnmachinelearning/comments/e2xyst/hough_transform_animation_demo/" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Hough transform animation demo</div><div class="bookmark-description">101 votes, 14 comments. 277k members in the learnmachinelearning community. A subreddit dedicated to learning machine learning</div></div><div class="bookmark-href"><img src="https://www.redditstatic.com/desktop2x/img/favicon/favicon-16x16.png" class="icon bookmark-icon"/>https://www.reddit.com/r/learnmachinelearning/comments/e2xyst/hough_transform_animation_demo/</div></div></a></figure><p id="eed1d1c1-b878-45d7-a0dc-8b9d0848fb9c" class="">If we have a line in the image space, then it would look something like this in the parameter space:</p><figure id="bca69936-7caa-4b96-b499-240544410b55" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2067.png"><img style="width:819px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2067.png"/></a></figure><p id="1e1bf41f-433e-4bc7-8d42-69ec132a5c13" class="">Some more basic shapes</p><figure id="d28d93ba-beb7-4ebc-94fa-c4c09e67b99b" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2068.png"><img style="width:869px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2068.png"/></a></figure><figure id="4e812b12-039a-4da0-ba33-d551d334718d" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2069.png"><img style="width:727px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2069.png"/></a></figure><p id="ef4746b8-c39e-4c10-b6a3-1513ccdb0556" class="">More complex images look something like this. Note how in reality, noise contributes to the Hough space as well, which might result in multiple local maxima near each other, when in reality it’s just one line.</p><figure id="e579dae5-73de-4826-a974-cbdcd21acc6c" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2070.png"><img style="width:825px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2070.png"/></a></figure><figure id="298c126a-f9b4-445e-875a-64f5e7e4dcea" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2071.png"><img style="width:914px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2071.png"/></a></figure><p id="4f1072e8-b855-4f08-991b-be32eadd9eff" class="">Note how Hough lines are not affected by occlusion.</p><h2 id="576932e2-6304-4401-af5e-3898980c9b1e" class="">Hough Circles</h2><p id="f00336d5-af87-412d-9fd4-1cb073179b6e" class="">We will apply the same idea of parametrization, but this time to a circle.</p><figure id="3d091122-fce8-4f77-92e5-e764f6c6d1d5" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2072.png"><img style="width:842px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2072.png"/></a></figure><p id="fdbe730d-f03b-4fa3-b810-1d895b70a105" class="">Our variables in the Hough space in this case will be ((a, b), r), where a and b represent the circle’s center and r represents the radius.</p><p id="9f9b4b16-4db7-42aa-8b12-89e93ae36bea" class="">If radius is known:</p><table id="82af740e-b9e1-40d0-84a0-25aaa5dd79e8" class="simple-table"><thead class="simple-table-header"><tr id="8b2fe24b-62af-480f-8de8-dc6301b480d8"><th id="U&gt;k&lt;" class="simple-table-header-color simple-table-header" style="width:277.5px">Image Space</th><th id="a@uN" class="simple-table-header-color simple-table-header" style="width:277.5px">Hough (Parameter) Space</th></tr></thead><tbody><tr id="96cd9e4f-fba7-439d-aa6b-ba62607792b5"><td id="U&gt;k&lt;" class="" style="width:277.5px">point</td><td id="a@uN" class="" style="width:277.5px">circles</td></tr><tr id="723b14a8-9dcb-4683-b0a2-a0e7024bdc80"><td id="U&gt;k&lt;" class="" style="width:277.5px">2 points</td><td id="a@uN" class="" style="width:277.5px">2 intersections</td></tr><tr id="72fb8950-b6f7-4e59-b604-5f9068d36162"><td id="U&gt;k&lt;" class="" style="width:277.5px">3 points or more</td><td id="a@uN" class="" style="width:277.5px">1 intersection point</td></tr></tbody></table><p id="4f9767ca-719e-465c-ad1f-2f4c98b98667" class=""><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>What if radius is unknown? </strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>The Hough space dimensionality increases to 3 (becomes 3D) and the surface shape becomes a cone, as we vary the radius and get a different circle each time around the same center, which forms a cone. With the curse of dimensionality, computations become a lot more complicated and lenghthier.</p><p id="0f8334ef-f91c-4add-88ea-cc27af1b4576" class="">So this got a little bit complicated. How do we make things simpler? We can utilize <strong>gradient information</strong>. </p><figure id="81a1dab9-c12e-4b94-a8cc-013037248516" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2073.png"><img style="width:867px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2073.png"/></a></figure><p id="3a1b5dda-1e3b-47f0-9819-aafd70ab3ee8" class="">Rather than having to vote for entire circle around the point (x, y), we can use the gradient to pinpoint a point that lies on the radius of the circle, assuming we know what the radius is. We can easily find the gradient of the point using edge detection.</p><p id="3fa74070-aeaa-402a-99e3-fdc6cf37ae7d" class="">This changes nothing in the parameter space, but speeds up the computation.</p><p id="46bc5241-4740-470b-a4eb-a23f189b2af5" class="">From the sheet:</p><figure id="d5b310ca-f667-417e-add3-6054ee65484f" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2074.png"><img style="width:726px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2074.png"/></a></figure><figure id="4c6b64b3-4f60-4581-81d2-c2dadc6c46bf" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2075.png"><img style="width:760px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2075.png"/></a></figure><figure id="b2f44240-e9e5-4a05-bf83-cda89511e76d" class="image"><a href="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2076.png"><img style="width:192px" src="Computer%20Vision%20Lecture%203%2070c6d3a60d5345c0beb85d8e10151d74/Untitled%2076.png"/></a></figure><p id="c2ecf5fc-f9c1-427c-9108-ca061e84f424" class="">
+</p></div></article></body></html>

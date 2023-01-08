@@ -1,0 +1,673 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Computer Vision Tutorial 1</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="a3df5c6b-e6ea-4f3a-a2ec-cda7043ff6de" class="page sans"><header><h1 class="page-title">Computer Vision Tutorial 1</h1><table class="properties"><tbody><tr class="property-row property-row-date"><th><span class="icon property-icon"><svg viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesDate"><path d="M3.29688 14.4561H12.7031C14.1797 14.4561 14.9453 13.6904 14.9453 12.2344V3.91504C14.9453 2.45215 14.1797 1.69336 12.7031 1.69336H3.29688C1.82031 1.69336 1.05469 2.45215 1.05469 3.91504V12.2344C1.05469 13.6973 1.82031 14.4561 3.29688 14.4561ZM3.27637 13.1162C2.70898 13.1162 2.39453 12.8154 2.39453 12.2207V5.9043C2.39453 5.30273 2.70898 5.00879 3.27637 5.00879H12.71C13.2842 5.00879 13.6055 5.30273 13.6055 5.9043V12.2207C13.6055 12.8154 13.2842 13.1162 12.71 13.1162H3.27637ZM6.68066 7.38086H7.08398C7.33008 7.38086 7.41211 7.30566 7.41211 7.05957V6.66309C7.41211 6.41699 7.33008 6.3418 7.08398 6.3418H6.68066C6.44141 6.3418 6.35938 6.41699 6.35938 6.66309V7.05957C6.35938 7.30566 6.44141 7.38086 6.68066 7.38086ZM8.92285 7.38086H9.31934C9.56543 7.38086 9.64746 7.30566 9.64746 7.05957V6.66309C9.64746 6.41699 9.56543 6.3418 9.31934 6.3418H8.92285C8.67676 6.3418 8.59473 6.41699 8.59473 6.66309V7.05957C8.59473 7.30566 8.67676 7.38086 8.92285 7.38086ZM11.1582 7.38086H11.5547C11.8008 7.38086 11.8828 7.30566 11.8828 7.05957V6.66309C11.8828 6.41699 11.8008 6.3418 11.5547 6.3418H11.1582C10.9121 6.3418 10.8301 6.41699 10.8301 6.66309V7.05957C10.8301 7.30566 10.9121 7.38086 11.1582 7.38086ZM4.44531 9.58203H4.84863C5.09473 9.58203 5.17676 9.50684 5.17676 9.26074V8.86426C5.17676 8.61816 5.09473 8.54297 4.84863 8.54297H4.44531C4.20605 8.54297 4.12402 8.61816 4.12402 8.86426V9.26074C4.12402 9.50684 4.20605 9.58203 4.44531 9.58203ZM6.68066 9.58203H7.08398C7.33008 9.58203 7.41211 9.50684 7.41211 9.26074V8.86426C7.41211 8.61816 7.33008 8.54297 7.08398 8.54297H6.68066C6.44141 8.54297 6.35938 8.61816 6.35938 8.86426V9.26074C6.35938 9.50684 6.44141 9.58203 6.68066 9.58203ZM8.92285 9.58203H9.31934C9.56543 9.58203 9.64746 9.50684 9.64746 9.26074V8.86426C9.64746 8.61816 9.56543 8.54297 9.31934 8.54297H8.92285C8.67676 8.54297 8.59473 8.61816 8.59473 8.86426V9.26074C8.59473 9.50684 8.67676 9.58203 8.92285 9.58203ZM11.1582 9.58203H11.5547C11.8008 9.58203 11.8828 9.50684 11.8828 9.26074V8.86426C11.8828 8.61816 11.8008 8.54297 11.5547 8.54297H11.1582C10.9121 8.54297 10.8301 8.61816 10.8301 8.86426V9.26074C10.8301 9.50684 10.9121 9.58203 11.1582 9.58203ZM4.44531 11.7832H4.84863C5.09473 11.7832 5.17676 11.708 5.17676 11.4619V11.0654C5.17676 10.8193 5.09473 10.7441 4.84863 10.7441H4.44531C4.20605 10.7441 4.12402 10.8193 4.12402 11.0654V11.4619C4.12402 11.708 4.20605 11.7832 4.44531 11.7832ZM6.68066 11.7832H7.08398C7.33008 11.7832 7.41211 11.708 7.41211 11.4619V11.0654C7.41211 10.8193 7.33008 10.7441 7.08398 10.7441H6.68066C6.44141 10.7441 6.35938 10.8193 6.35938 11.0654V11.4619C6.35938 11.708 6.44141 11.7832 6.68066 11.7832ZM8.92285 11.7832H9.31934C9.56543 11.7832 9.64746 11.708 9.64746 11.4619V11.0654C9.64746 10.8193 9.56543 10.7441 9.31934 10.7441H8.92285C8.67676 10.7441 8.59473 10.8193 8.59473 11.0654V11.4619C8.59473 11.708 8.67676 11.7832 8.92285 11.7832Z"></path></svg></span>Date</th><td><time>@October 1, 2022</time></td></tr><tr class="property-row property-row-number"><th><span class="icon property-icon"><svg viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesNumber"><path d="M2.4834 10.9902H4.33594L3.75488 13.8887C3.74121 13.9639 3.72754 14.0664 3.72754 14.1416C3.72754 14.5381 3.99414 14.7637 4.39746 14.7637C4.81445 14.7637 5.09473 14.5449 5.18359 14.1143L5.80566 10.9902H8.79297L8.21191 13.8887C8.19824 13.9639 8.18457 14.0664 8.18457 14.1416C8.18457 14.5381 8.45117 14.7637 8.85449 14.7637C9.27148 14.7637 9.55176 14.5449 9.63379 14.1143L10.2627 10.9902H12.4502C12.9287 10.9902 13.2432 10.6758 13.2432 10.2109C13.2432 9.8418 12.9902 9.56836 12.6006 9.56836H10.5498L11.2129 6.28711H13.3662C13.8379 6.28711 14.1523 5.96582 14.1523 5.50098C14.1523 5.13184 13.9062 4.8584 13.5098 4.8584H11.5L12.0195 2.27441C12.0264 2.21973 12.0469 2.11035 12.0469 2.01465C12.0469 1.625 11.7666 1.39258 11.3633 1.39258C10.9053 1.39258 10.6797 1.63867 10.5977 2.05566L10.0303 4.8584H7.04297L7.5625 2.27441C7.57617 2.21973 7.58984 2.11035 7.58984 2.01465C7.58984 1.625 7.30957 1.39258 6.91309 1.39258C6.44824 1.39258 6.21582 1.63867 6.13379 2.05566L5.57324 4.8584H3.54297C3.06445 4.8584 2.75 5.18652 2.75 5.65137C2.75 6.03418 3.00293 6.28711 3.39258 6.28711H5.28613L4.62305 9.56836H2.63379C2.15527 9.56836 1.84082 9.89648 1.84082 10.3613C1.84082 10.7373 2.09375 10.9902 2.4834 10.9902ZM6.09277 9.56836L6.75586 6.28711H9.74316L9.08008 9.56836H6.09277Z"></path></svg></span>Number</th><td>1</td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><svg viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M1.56738 3.25879H14.4258C14.7676 3.25879 15.0479 2.97852 15.0479 2.63672C15.0479 2.29492 14.7744 2.02148 14.4258 2.02148H1.56738C1.21875 2.02148 0.952148 2.29492 0.952148 2.63672C0.952148 2.97852 1.22559 3.25879 1.56738 3.25879ZM1.56738 6.84082H14.4258C14.7676 6.84082 15.0479 6.56055 15.0479 6.21875C15.0479 5.87695 14.7744 5.60352 14.4258 5.60352H1.56738C1.21875 5.60352 0.952148 5.87695 0.952148 6.21875C0.952148 6.56055 1.22559 6.84082 1.56738 6.84082ZM1.56738 10.4229H14.4258C14.7676 10.4229 15.0479 10.1426 15.0479 9.80078C15.0479 9.45898 14.7744 9.18555 14.4258 9.18555H1.56738C1.21875 9.18555 0.952148 9.45898 0.952148 9.80078C0.952148 10.1426 1.22559 10.4229 1.56738 10.4229ZM1.56738 14.0049H8.75879C9.10059 14.0049 9.38086 13.7246 9.38086 13.3828C9.38086 13.041 9.10742 12.7676 8.75879 12.7676H1.56738C1.21875 12.7676 0.952148 13.041 0.952148 13.3828C0.952148 13.7246 1.22559 14.0049 1.56738 14.0049Z"></path></svg></span>Topics</th><td>Image histograms, image filters, enhancing images, thresholding</td></tr><tr class="property-row property-row-select"><th><span class="icon property-icon"><svg viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesSelect"><path d="M8 15.126C11.8623 15.126 15.0615 11.9336 15.0615 8.06445C15.0615 4.20215 11.8623 1.00293 7.99316 1.00293C4.13086 1.00293 0.938477 4.20215 0.938477 8.06445C0.938477 11.9336 4.1377 15.126 8 15.126ZM8 13.7383C4.85547 13.7383 2.33301 11.209 2.33301 8.06445C2.33301 4.91992 4.84863 2.39746 7.99316 2.39746C11.1377 2.39746 13.6738 4.91992 13.6738 8.06445C13.6738 11.209 11.1445 13.7383 8 13.7383ZM7.62402 10.6348C7.79492 10.915 8.20508 10.9287 8.37598 10.6348L10.666 6.73145C10.8574 6.41016 10.7002 6.04102 10.3652 6.04102H5.62793C5.29297 6.04102 5.14941 6.43066 5.32031 6.73145L7.62402 10.6348Z"></path></svg></span>Type</th><td><span class="selected-value select-value-color-purple">Tutorial</span></td></tr></tbody></table></header><div class="page-body"><nav id="ef0d7584-2519-4047-bf8e-664776bbc364" class="block-color-gray table_of_contents"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#da5e357f-4c95-445d-88f4-344fdf672299">📊Image Histograms</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#19cc8ed6-93a1-4472-8566-b516fdeb4785">🔍Image Filters</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#ca909306-9a87-48d0-9db4-e54ae790394c">Point Operations</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#70015a27-6b86-411c-899b-3762bd5f0945">How can we enhance images?</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#1f91be0d-7db7-4bcc-aa82-a96a0705b977">Steps</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#0d466a0c-395f-48ca-b830-3c4607ff1cf5">Thresholding</a></div></nav><h2 id="da5e357f-4c95-445d-88f4-344fdf672299" class="">📊Image Histograms</h2><p id="56962729-0d8b-4d7c-bfe2-ea7fad30d365" class="">Image representation on computers is a discrete format of the continuous world.</p><div id="f6ed8598-c326-4d66-990b-b8659c3ba52e" class="column-list"><div id="c8f59d84-070c-44eb-b37c-0c9e0beef07d" style="width:50.000000000000014%" class="column"><p id="31d2d733-a12c-45f9-bef2-0549d08ee4c0" class="">
+</p><figure id="0ae9c261-c036-4534-8bf5-aa5ec52ce96b" class="image"><a href="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled.png"><img style="width:517px" src="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled.png"/></a></figure></div><div id="b10d9648-12d7-423a-b9cc-7af8bb30c42e" style="width:50%" class="column"><table id="3519838e-f565-4fe4-be2e-8d7f8ea95bbe" class="simple-table"><tbody><tr id="0fe0c496-179c-42c8-acf7-deb8d334bb1c"><td id="C\YQ" class="" style="width:53px">2</td><td id="JSzh" class="" style="width:47px">3</td><td id="YY{W" class="" style="width:47px">2</td></tr><tr id="4f9dbbb9-441f-4719-9073-a57b4b5ce427"><td id="C\YQ" class="" style="width:53px">7</td><td id="JSzh" class="" style="width:47px">5</td><td id="YY{W" class="" style="width:47px">1</td></tr><tr id="1ff63163-e892-46e0-beb9-f7e7008a498c"><td id="C\YQ" class="" style="width:53px">1</td><td id="JSzh" class="" style="width:47px">7</td><td id="YY{W" class="" style="width:47px">4</td></tr></tbody></table><p id="df596aad-6b5e-44d5-a822-9fbf866221ed" class="">
+</p></div></div><p id="65edbf31-c5e9-466a-97f0-4a94f0f853be" class="">Suppose the above table is an image, with each number representing the intensity value at this particular pixel. </p><p id="a8d06c42-26f7-492f-bb0d-093fb9219e38" class="">If we were to represent the pixel using 3 bits, then we have <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>3</mn></msup><mo>=</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">2^3 = 8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">8</span></span></span></span></span><span>﻿</span></span> values for the intensity. Each value is called a <strong>grey level. </strong>Usually pixels are represented using 8 bits, meaning we get 256 grey levels for an image, ranging from 0 → 255.</p><p id="5f10f278-1d9a-4157-a23d-73f009b87fcb" class="">
+</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="c8520df2-7a00-4b11-856e-cb8b44136383"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">The following images and histograms are from the <a href="https://colab.research.google.com/drive/1Uzlwa3umy6S14xklZ4-iA2dnaqVqJSRS?usp=sharing&amp;fbclid=IwAR3dEKp_H7OT80-GjTpCUq-1fECWEzuYWu7vBjQZDCYHM-AfKfrc2EFmFxc#scrollTo=jnPNr2XPRjS_">tutorial colab notebook</a>.</div></figure><figure id="6f68f49c-4b2a-4d4c-8e38-f93ec58aa340" class="image"><a href="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%201.png"><img style="width:480px" src="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%201.png"/></a></figure><p id="560dd21f-9bec-474a-ba53-a48c09384cd5" class="">The image is <strong>underexposed </strong>as the histogram is shifted left.</p><figure id="64063771-c9f9-455c-b8a6-117fb1d9d510" class="image"><a href="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%202.png"><img style="width:1482px" src="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%202.png"/></a></figure><p id="f3af503a-e9f6-46b5-b56d-b11c637512f2" class="">This is a lighter <strong>overexposed </strong>image, so the histogram values are shifted to the right.</p><figure id="e5a29ba4-f31a-4482-b3dd-bef7d47e6287" class="image"><a href="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%203.png"><img style="width:1483px" src="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%203.png"/></a></figure><p id="d8f88a14-9c8f-4a75-8051-f8a26837d99a" class="">This image is neither, since most of the intensity values are midpoint values. As a result, we get a peak.</p><h2 id="19cc8ed6-93a1-4472-8566-b516fdeb4785" class="">🔍Image Filters</h2><ul id="f95eb674-9e86-4afc-b7bb-a5419c3b93f6" class="bulleted-list"><li style="list-style-type:disc">These are useful in image processing, and can be used to find problems with images.</li></ul><ul id="2c5f76d5-0bf9-489b-b387-7190bf36157b" class="bulleted-list"><li style="list-style-type:disc">They could help find evidence of image manipulation that is not detectable by the human eye, such as hiding text within the image.</li></ul><ul id="d2a4a744-07cd-45a3-8761-171ba1a63931" class="bulleted-list"><li style="list-style-type:disc">If an image is jumbled, the histogram will remain the same as it represents intensity values only and does not encode any spatial information. For example, the following two images will have the same exact histogram.</li></ul><figure id="ce95792d-5286-421f-bdef-d16ec528e57e" class="image"><a href="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%204.png"><img style="width:463px" src="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%204.png"/></a></figure><figure id="8c52ec53-2a83-42c1-941f-734cd5466753" class="image"><a href="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%205.png"><img style="width:480px" src="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%205.png"/></a></figure><ul id="e8cc3014-929b-4096-8c07-b566aac096a5" class="bulleted-list"><li style="list-style-type:disc">The following 4 images will also have the same histograms despite being jumbled versions of each other<figure id="10a69f99-5ca0-4ca3-9b75-56f9f62ee2c8" class="image"><a href="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%206.png"><img style="width:1168px" src="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%206.png"/></a></figure></li></ul><figure id="9ceba48a-af47-4b10-bc5c-41e884a93ffb" class="image"><a href="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%207.png"><img style="width:1148px" src="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%207.png"/></a></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="b9f86c43-fe42-4eb7-8062-cf406adcc514"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><strong>Image histograms</strong> do not contain any spatial information about the image, only information on the intensity values.</div></figure><h3 id="ca909306-9a87-48d0-9db4-e54ae790394c" class="">Point Operations</h3><ul id="21390f4c-439f-49d5-86c8-cfef9a055bf3" class="bulleted-list"><li style="list-style-type:disc">If we multiply the values by a constant &gt; 1, <strong>contrast </strong>of the image increases, and the width of the histogram increases (the range)</li></ul><ul id="7afa0f18-fa8d-460a-a7e9-e8df26cd4a13" class="bulleted-list"><li style="list-style-type:disc">If we multiply by a constant &lt; 1, the contrast will decrease and the width of the histogram will decrease.</li></ul><figure id="8955862d-90bd-42e0-8ed4-c674b5a33952" class="image"><a href="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%208.png"><img style="width:1187px" src="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%208.png"/></a></figure><ul id="66135846-a340-430a-915a-ea8af4ed335d" class="bulleted-list"><li style="list-style-type:disc">Adding or subtracting constant values from the intensity values of the image, the histogram will shift. Note that any <strong>negative </strong>values are removed, so the histogram is cut off/terminated.</li></ul><figure id="ede58b7f-2802-4f6e-a564-1aff5716c9cc" class="image"><a href="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%209.png"><img style="width:1204px" src="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%209.png"/></a></figure><ul id="4edea48d-0c31-4240-bdd4-7c45a86b1eca" class="bulleted-list"><li style="list-style-type:disc">Shades of grey can either be<ul id="6b9dd2a1-d4f8-4374-b6bb-222c5b49d024" class="bulleted-list"><li style="list-style-type:circle">Limited (black and white, or black and white and a mid value)</li></ul><ul id="2ca6455c-04a9-448b-b973-7a069b15ce19" class="bulleted-list"><li style="list-style-type:circle">A continuous gradient</li></ul><figure id="75b6681c-5b80-42ec-b0ac-4f37e9131300" class="image"><a href="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%2010.png"><img style="width:1214px" src="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%2010.png"/></a></figure></li></ul><ul id="1c2f73e7-0456-422d-ad77-b5646901f83b" class="bulleted-list"><li style="list-style-type:disc">Both will have the same contrast, <em>as contrast represents the difference between the lowest value (black) and the highest value (white).</em> </li></ul><ul id="b3b9543c-8ecc-48b0-a501-07e841c98b43" class="bulleted-list"><li style="list-style-type:disc"><strong>Dynamic range </strong>is the number of unique values that are present in the image. So if any midpoint value between the highest and lowest values is not present, it is not counted with the dynamic range. So in this case the dynamic range will differ in the above two cases.</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="65ec9113-97be-4c75-8942-bf0513015861"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><strong>Contrast </strong>is the difference between the maximum level and the lowest level in the image</div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="473dea3a-0ede-44e3-82fc-03bce0af84fc"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><strong>Dynamic range </strong>is the number of unique values that are present in the image</div></figure><h2 id="70015a27-6b86-411c-899b-3762bd5f0945" class="">How can we enhance images?</h2><p id="d3062970-8035-4473-b5a9-7d1cfd8175b9" class="">We can utilize a method called <strong>histogram equalization.</strong></p><p id="b0517822-0246-49c9-90aa-50725ee36663" class="">It should only be used when the image is over or underexposed, not otherwise.</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="7eb8247a-91dd-4ead-b027-d1dfe3f14b81"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">Equalizing a histogram is a way to modify the pixel values such that each intensity value in the histogram have almost an equal number of pixels assigned to it. The image will produce a flat/uniform histogram. <p id="426fc55c-4553-49b9-985f-8b84dbb05c58" class="">To equalize the image histogram we use its cumulative histogram and follow this equation to know the mapping:</p><figure id="21d4f074-8cd9-4029-a355-5f28d1dc11ca" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>f</mi><mrow><mi>e</mi><mi>q</mi></mrow></msub><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo><mo>=</mo><mtext> </mtext><mo stretchy="false">⌊</mo><mi>H</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo><mfrac><mrow><mi>K</mi><mo>−</mo><mn>1</mn></mrow><mrow><mi>M</mi><mi>N</mi></mrow></mfrac><mo stretchy="false">⌋</mo><mtext> </mtext></mrow><annotation encoding="application/x-tex">f_{eq}(a) =  \lfloor H(a) \frac{K-1}{MN} \rfloor </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139200000000003em;"><span style="top:-2.5500000000000003em;margin-left:-0.10764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.04633em;vertical-align:-0.686em;"></span><span class="mord"> </span><span class="mopen">⌊</span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mclose">)</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">MN</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">⌋</span><span class="mord"> </span></span></span></span></span></div></figure><figure id="a662e168-9b89-45f1-9e35-f3d212ef7152" class="image"><a href="data:image/png;base64,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"><img src="data:image/png;base64,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"/></a></figure><p id="fbcd85b5-35ed-44ff-a389-005ebb2c4966" class="">where K-1 is the maximum pixel value that can exist in the image, and M.N is the size of the image (total number of pixels), H(a) is the value of the cumulative histogram for the intensity value a. The result is the intensity value where the pixels should be mapped to.</p></div></figure><figure id="40b043b9-3dad-47e1-8408-69c5cf700688" class="image"><a href="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%2011.png"><img style="width:1820px" src="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%2011.png"/></a></figure><div id="64381fa9-a58e-454b-b544-962643f4b5ac" class="column-list"><div id="aac04d98-fdbb-4169-a534-177ff51adfc6" style="width:50%" class="column"><p id="eb096276-cd17-4810-9ad8-77b887ddf417" class="">The rule is derived using similarity triangles</p><p id="652e419a-0118-41c0-a346-08fde587e010" class="">
+</p></div><div id="8189f993-df0f-4982-ab90-d21308c29ec4" style="width:50%" class="column"><figure id="bcc0becf-68c2-4b28-836c-e27210d93a93" class="image"><a href="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%2012.png"><img style="width:434px" src="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%2012.png"/></a></figure></div></div><h3 id="1f91be0d-7db7-4bcc-aa82-a96a0705b977" class="">Steps</h3><ol type="1" id="da8023e4-ae01-49af-963e-be94d6ee9cd6" class="numbered-list" start="1"><li>Create the cumulative density graph (cdf) from the image histogram (pdf)</li></ol><ol type="1" id="52809215-e63a-423c-a834-d1c506afeae9" class="numbered-list" start="2"><li>Apply the equation for each intensity level.</li></ol><ol type="1" id="868c6b79-f4b7-4a7b-962a-b81716ff9288" class="numbered-list" start="3"><li>Map the old intensity levels to the new intensity level values to get the new image histogram. For example, if we learn from the equation that intensity levels A and B map into intensity level C, then the new pdf for C will include the values that were there for A and B. If no level maps into intensity level D, then its new value will be 0.</li></ol><p id="3587dc6e-b143-4743-bc37-f202b07367fc" class="">We can also take regions and equalize on each region.</p><h2 id="0d466a0c-395f-48ca-b830-3c4607ff1cf5" class="">Thresholding</h2><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="ecb31d0a-4f43-47d4-a7f3-2c790a6d0620"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">Thresholding changes the pixel value based on a condition.<ul id="9c2ebbea-de54-4312-847d-3800f6e49871" class="bulleted-list"><li style="list-style-type:disc"><strong>Binary Thresholding</strong>: checks if the pixel value is less than a certain cutoff (here 127) and assign it the value 0, or assign it a maximum value (here provided 255).</li></ul><ul id="8be2b9c1-4dd0-41b2-922c-4bf503ac60cf" class="bulleted-list"><li style="list-style-type:disc"><strong>Binary Inverse</strong>: does the opposite of binary thresholding → values are reversed</li></ul><p id="2a6a9046-b336-47d4-952f-222e69f01628" class="">It can be useful in segmentation.</p></div></figure><figure id="40c664e5-9bce-49a8-ba4e-884e267f0337" class="image"><a href="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%2013.png"><img style="width:1137px" src="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%2013.png"/></a></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1be1b199-eaa2-477b-aeb7-1d3999a5cf29"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><strong>Adaptive Thresholding, </strong>also called local thresholding, applies thresholding on each part, with a different threshold for each area. This allows for much more detailed images.</div></figure><figure id="c53c2c7d-6258-4897-952b-c29f0420f81d" class="image"><a href="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%2014.png"><img style="width:1145px" src="Computer%20Vision%20Tutorial%201%20a3df5c6be6ea4f3aa2eccda7043ff6de/Untitled%2014.png"/></a></figure></div></article></body></html>
