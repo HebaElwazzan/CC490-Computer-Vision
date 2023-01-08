@@ -4,4 +4,4 @@ Slides used are taken from the lectures themselves and any other sources are cit
 
 [Table of Contents](http://htmlpreview.github.io/?https://github.com/HebaElwazzan/CC490-Computer-Vision/blob/main/Computer%20Vision.html)
 
-[View in notion](https://hebaelwazzan.notion.site/36f4872636d343a298feb30de740bc50?v=59c7614e67bb4afd96831abed36f9807) (better formatting and updates)
+[View in notion](https://hebaelwazzan.notion.site/36f4872636d343a298feb30de740bc50?v=e045bcaca44a4c3d9b0c9dff2f115a01) (better formatting and updates)
